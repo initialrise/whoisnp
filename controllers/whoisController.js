@@ -1,10 +1,8 @@
 const cheerio = require("cheerio");
 const axios = require("axios");
 
-const session = axios.create();
-
 const grabCSRF = async () => {
-  const raw = await session.get("https://register.com.np/whois-lookup");
+  const raw = await axios.get("https://register.com.np/whois-lookup");
   const response = raw.data;
   const headers = { headers: { Cookie: raw.headers["set-cookie"] } };
   const $ = cheerio.load(response);
@@ -30,7 +28,7 @@ const whoisController = async (req, res) => {
       domainExtension: extension,
     });
 
-    const raw = await session.post(
+    const raw = await axios.post(
       "https://register.com.np/checkdomain_whois",
       body,
       headers
